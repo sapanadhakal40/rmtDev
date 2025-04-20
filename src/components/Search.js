@@ -1,4 +1,5 @@
 import {
+    state,
     BASE_API_URL,
     searchFormElement,
     searchInputElement,
@@ -45,12 +46,18 @@ const searchText = searchInputElement.value;
        const data = await getData(`${BASE_API_URL}/jobs?search=${searchText}`);
       
         const { jobItems } = data;
-     
+
+        //update state object
+        state.searchJobItems = jobItems; //search job items which is an array of objects
+        //using const we can not change the value of jobItems but we can change the properties of the object inside the array
+     // can't assign new state 
+
+
         renderSpinner('search');
      
         numberElement.textContent = jobItems.length;
      
-        renderJobList(jobItems);
+        renderJobList();
 
     }catch (error) {    //immediately comes here if there is a network error
         renderSpinner('search');

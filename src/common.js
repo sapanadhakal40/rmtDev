@@ -4,6 +4,12 @@
 export const BASE_API_URL = "https://bytegrad.com/course-assets/js/2/api/jobs";
 export const DEFAULT_DISPLAY_TIME = 3000; // 3 seconds
 
+//state objects
+export const state = {
+    searchJobItems: [], //search job items
+
+
+}
 
 
 //SELECTORS
