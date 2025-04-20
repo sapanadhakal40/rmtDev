@@ -27,3 +27,16 @@ export const sortingBtnRelevantElement = document.querySelector(".sorting__butto
 export const sortingBtnRecentElement = document.querySelector(".sorting__button--recent");
 export const spinnerSearchElement = document.querySelector(".spinner--search");
 export const spinnerJobDetailsElement = document.querySelector(".spinner--job-details");
+
+
+//HELPER or UTILITY FUNCTIONS
+export const getData = async completeURL => {
+    const response = await fetch(completeURL); //getting data from the server
+    const data = await response.json();
+
+    if (!response.ok) {
+        // Handle non-200 responses (e.g., 404, 500)
+        throw new Error("data.description");
+    }
+    return data; //returning the data to the calling function
+};

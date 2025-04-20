@@ -1,7 +1,8 @@
 import {
     BASE_API_URL,
     jobListSearchElement,
-    jobDetailsContentElement
+    jobDetailsContentElement,
+    getData
 } from "../common.js";
 import renderSpinner from "./Spinner.js";
 import renderJobDetails from "./JobDetails.js";
@@ -63,13 +64,8 @@ const clickHandler = async event => {
 
     //fetch job item data
 try{
-    const response = await fetch(`${BASE_API_URL}/jobs/${id}`);
-    const data = await response.json();
-
-    if (!response.ok) { //400, 500, 404
-        throw new Error("data.description"); //description server is giving us
-    }
-    const { jobItem } = data;
+   const data = await getData(`${BASE_API_URL}/jobs/${id}`); //getdata function is in common.js   
+   const { jobItem } = data;
 
     //remove spinner
     renderSpinner('job-details');

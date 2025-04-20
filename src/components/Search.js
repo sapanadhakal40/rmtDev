@@ -4,7 +4,8 @@ import {
     searchInputElement,
     spinnerSearchElement,
     jobListSearchElement,
-    numberElement
+    numberElement,
+    getData
 } from "../common.js";
 import renderError from "./Error.js";
 import renderSpinner from "./Spinner.js";
@@ -40,14 +41,9 @@ const searchText = searchInputElement.value;
     
     // Fetch search results
     try {
-        const response = await fetch(`${BASE_API_URL}/jobs?search=${searchText}`);
-        const data = await response.json();
-
-        if (!response.ok) {
-            // Handle non-200 responses (e.g., 404, 500)
-            throw new Error("data.description");
-        }
-     
+        //getdata function is in common.js
+       const data = await getData(`${BASE_API_URL}/jobs?search=${searchText}`);
+      
         const { jobItems } = data;
      
         renderSpinner('search');
