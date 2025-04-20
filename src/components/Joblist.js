@@ -3,6 +3,7 @@ import {
     jobDetailsContentElement,
     spinnerJobDetailsElement
 } from "../common.js";
+import renderSpinner from "./Spinner.js";
 
 const clickHandler = event => {
     event.preventDefault();
@@ -26,6 +27,7 @@ const clickHandler = event => {
     jobDetailsContentElement.innerHTML = "";
 
     //show spinner
+     renderSpinner('job-details');
     spinnerJobDetailsElement.classList.add("spinner--visible");
 
     //get the id
@@ -45,7 +47,7 @@ const clickHandler = event => {
     const { jobItem } = data;
 
     //remove spinner
-    spinnerJobDetailsElement.classList.remove("spinner--visible");
+renderSpinner('job-details');
 
     //render job details content
     const jobDetailsHTML = `

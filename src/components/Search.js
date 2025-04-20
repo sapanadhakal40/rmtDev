@@ -5,6 +5,8 @@ import {
     jobListSearchElement,
     numberElement
 } from "../common.js";
+import renderError from "./Error.js";
+import renderSpinner from "./Spinner.js";
 
 
 //search component-----
@@ -19,11 +21,9 @@ const searchText = searchInputElement.value;
    const forbiddenPattern = /[0-9]/; 
    const patternMatch = forbiddenPattern.test(searchText);
    if (patternMatch) {
-       errorTextElement.textContent = "Sorry, but we don't support this search term.";
-       errorElement.classList.add("error--visible");
-       setTimeout(() => {
-           errorElement.classList.remove("error--visible");
-       }, 3000);
+    
+         //show error message
+         renderError("Your search term should not contain numbers.");
          return;
    }
    //blur input field
@@ -33,7 +33,8 @@ const searchText = searchInputElement.value;
    jobListSearchElement.innerHTML = "";
 
    //show spinner
-    spinnerSearchElement.classList.add("spinner--visible");
+   renderSpinner('search');
+
     
     // Fetch search results
     fetch(`https://bytegrad.com/course-assetss/js/2/api/jobs?search=${searchText}`)
@@ -55,7 +56,7 @@ const searchText = searchInputElement.value;
      const { jobItems } = data;
      
     //remove spinner
-        spinnerSearchElement.classList.remove("spinner--visible");
+    renderSpinner('search');
 
         //render number of results
        numberElement.textContent = jobItems.length; 
