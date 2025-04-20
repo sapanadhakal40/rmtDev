@@ -1,4 +1,5 @@
 import {
+    BASE_API_URL,
     searchFormElement,
     searchInputElement,
     spinnerSearchElement,
@@ -37,7 +38,7 @@ const searchText = searchInputElement.value;
 
     
     // Fetch search results
-    fetch(`https://bytegrad.com/course-assetss/js/2/api/jobs?search=${searchText}`)
+    fetch(`${BASE_API_URL}/jobs?search=${searchText}`)
     .then((response) => {
         if (!response.ok) {
             console.log("Error fetching data:", response.statusText);

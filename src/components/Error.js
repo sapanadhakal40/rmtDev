@@ -1,4 +1,5 @@
 import{ 
+    DEFAULT_DISPLAY_TIME,
    errorTextElement,
    errorElement
    
@@ -9,7 +10,7 @@ const renderError = (message='Something went wrong') => {
     errorElement.classList.add("error--visible");
     setTimeout(() => {
         errorElement.classList.remove("error--visible");
-    }, 3000);
+    }, DEFAULT_DISPLAY_TIME);
 };
 
 export default renderError;

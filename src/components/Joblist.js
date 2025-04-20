@@ -1,4 +1,5 @@
 import {
+    BASE_API_URL,
     jobListSearchElement,
     jobDetailsContentElement,
     spinnerJobDetailsElement
@@ -34,7 +35,7 @@ const clickHandler = event => {
     const id = jobItemElement.children[0].getAttribute("href");
 
     //fetch job item data
-    fetch(`https://bytegrad.com/course-assets/js/2/api/jobs/${id}`)
+    fetch(`${BASE_API_URL}/jobs/${id}`)
         .then(response => {
             if (!response.ok) {
                 console.log("Error fetching data:", response.statusText);
