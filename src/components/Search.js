@@ -12,7 +12,7 @@ import renderJobList from "./Joblist.js";
 
 
 //search component-----
-const submitHandler = event => {
+const submitHandler =async event => {
     // Prevent the default form submission behavior
     event.preventDefault();
 
@@ -39,40 +39,72 @@ const searchText = searchInputElement.value;
 
     
     // Fetch search results
-    fetch(`${BASE_API_URL}/jobs?search=${searchText}`)
-    .then((response) => {
+    try {
+        const response = await fetch(`${BASE_API_URL}/jobs?search=${searchText}`);
+        const data = await response.json();
+
         if (!response.ok) {
-            throw new Error("Resource issue(eg: resource doesn\'t exist) or server issue");
-                // message: "Resource issue(eg: resource doesn\'t exist) or server issue",
-                // name: "Error"
-            
-            // console.log("Error fetching data:", response.statusText);
-            // return; //no need return when use throw
+            // Handle non-200 responses (e.g., 404, 500)
+            throw new Error("data.description");
         }
-        return response.json();
-    })
-    .then((data) => {
-        // console.log(data);
-
-    // const { jobItems: j } = data;
-    // console.log(j);
-    // const { jobItems } = data;
-    // console.log(data.jobItems);
-
-     const { jobItems } = data;
      
-    //remove spinner
-    renderSpinner('search');
-
-        //render number of results
-       numberElement.textContent = jobItems.length; 
-         //render job items in search job list
+        const { jobItems } = data;
+     
+        renderSpinner('search');
+     
+        numberElement.textContent = jobItems.length;
+     
         renderJobList(jobItems);
-})
-    .catch( error => {
+
+    }catch (error) {    //immediately comes here if there is a network error
         renderSpinner('search');
         renderError(error.message); //error message from the server and other errors
-        // console.error(error.message);  //network problems or other errors and trying to parse something that is not JSON
-    });
+    }
+
+
+
+
+
+
+
+
+
+
+
+//     fetch(`${BASE_API_URL}/jobs?search=${searchText}`)
+//     .then((response) => {
+//         if (!response.ok) {
+//             throw new Error("Resource issue(eg: resource doesn\'t exist) or server issue");
+//                 // message: "Resource issue(eg: resource doesn\'t exist) or server issue",
+//                 // name: "Error"
+            
+//             // console.log("Error fetching data:", response.statusText);
+//             // return; //no need return when use throw
+//         }
+//         return response.json();
+//     })
+//     .then((data) => {
+//         // console.log(data);
+
+//     // const { jobItems: j } = data;
+//     // console.log(j);
+//     // const { jobItems } = data;
+//     // console.log(data.jobItems);
+
+//      const { jobItems } = data;
+     
+//     //remove spinner
+//     renderSpinner('search');
+
+//         //render number of results
+//        numberElement.textContent = jobItems.length; 
+//          //render job items in search job list
+//         renderJobList(jobItems);
+// })
+//     .catch( error => {
+//         renderSpinner('search');
+//         renderError(error.message); //error message from the server and other errors
+//         // console.error(error.message);  //network problems or other errors and trying to parse something that is not JSON
+//     });
 };
 searchFormElement.addEventListener("submit", submitHandler);

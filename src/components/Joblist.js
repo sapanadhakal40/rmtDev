@@ -33,7 +33,7 @@ const renderJobList = jobItems => {
     });
 }
 
-const clickHandler = event => {
+const clickHandler = async event => {
     event.preventDefault();
 
     // get clicked job item element
@@ -62,30 +62,53 @@ const clickHandler = event => {
     const id = jobItemElement.children[0].getAttribute("href");
 
     //fetch job item data
-    fetch(`${BASE_API_URL}/jobs/${id}`)
-        .then(response => {
-            if (!response.ok) { //400, 500, 404
-                console.log("Error fetching data:", response.statusText);
-                return;
-            }
-            return response.json();
-        })
-        .then(data => {
-     // console.log(data);
+try{
+    const response = await fetch(`${BASE_API_URL}/jobs/${id}`);
+    const data = await response.json();
+
+    if (!response.ok) { //400, 500, 404
+        throw new Error("data.description"); //description server is giving us
+    }
     const { jobItem } = data;
 
     //remove spinner
-renderSpinner('job-details');
+    renderSpinner('job-details');
 
     //render job details content
     renderJobDetails(jobItem);
 
-        })
-        .catch( error => {
-            renderSpinner('search');
-            renderError(error.message); //error message from the server and other errors
-            // console.error(error.message);  //network problems or other errors and trying to parse something that is not JSON
-        });//network problems
+}catch(error){
+    renderSpinner('job-details');
+    renderError(error.message); //error message from the server and other errors
+    
+}
+
+//traditional way of doing it
+    
+//     fetch(`${BASE_API_URL}/jobs/${id}`)
+//         .then(response => {
+//             if (!response.ok) { //400, 500, 404
+//                 console.log("Error fetching data:", response.statusText);
+//                 return;
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//      // console.log(data);
+//     const { jobItem } = data;
+
+//     //remove spinner
+// renderSpinner('job-details');
+
+//     //render job details content
+//     renderJobDetails(jobItem);
+
+//         })
+//         .catch( error => {
+//             renderSpinner('search');
+//             renderError(error.message); //error message from the server and other errors
+//             // console.error(error.message);  //network problems or other errors and trying to parse something that is not JSON
+//         });//network problems
 };
 
 jobListSearchElement.addEventListener("click", clickHandler);
