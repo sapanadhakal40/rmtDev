@@ -42,8 +42,12 @@ const searchText = searchInputElement.value;
     fetch(`${BASE_API_URL}/jobs?search=${searchText}`)
     .then((response) => {
         if (!response.ok) {
-            console.log("Error fetching data:", response.statusText);
-            return;
+            throw new Error("Resource issue(eg: resource doesn\'t exist) or server issue");
+                // message: "Resource issue(eg: resource doesn\'t exist) or server issue",
+                // name: "Error"
+            
+            // console.log("Error fetching data:", response.statusText);
+            // return; //no need return when use throw
         }
         return response.json();
     })
@@ -65,6 +69,10 @@ const searchText = searchInputElement.value;
          //render job items in search job list
         renderJobList(jobItems);
 })
-    .catch( error => console.error("Error fetching data:", error));
+    .catch( error => {
+        renderSpinner('search');
+        renderError(error.message); //error message from the server and other errors
+        // console.error(error.message);  //network problems or other errors and trying to parse something that is not JSON
+    });
 };
 searchFormElement.addEventListener("submit", submitHandler);

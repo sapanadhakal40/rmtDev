@@ -5,6 +5,7 @@ import {
 } from "../common.js";
 import renderSpinner from "./Spinner.js";
 import renderJobDetails from "./JobDetails.js";
+import renderError from "./Error.js";
 
 const renderJobList = jobItems => {
     jobItems.slice(0,7).forEach(jobItem => {
@@ -63,7 +64,7 @@ const clickHandler = event => {
     //fetch job item data
     fetch(`${BASE_API_URL}/jobs/${id}`)
         .then(response => {
-            if (!response.ok) {
+            if (!response.ok) { //400, 500, 404
                 console.log("Error fetching data:", response.statusText);
                 return;
             }
@@ -80,7 +81,11 @@ renderSpinner('job-details');
     renderJobDetails(jobItem);
 
         })
-        .catch(error => console.error("Error fetching data:", error));
+        .catch( error => {
+            renderSpinner('search');
+            renderError(error.message); //error message from the server and other errors
+            // console.error(error.message);  //network problems or other errors and trying to parse something that is not JSON
+        });//network problems
 };
 
 jobListSearchElement.addEventListener("click", clickHandler);
