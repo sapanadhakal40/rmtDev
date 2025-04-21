@@ -16,7 +16,7 @@ const renderJobList = () => {   //remove the previous job items and add new job 
     
     state.searchJobItems.slice(state.currentPage * RESULT_PER_PAGE - RESULT_PER_PAGE, state.currentPage * RESULT_PER_PAGE).forEach(jobItem => {
         const newJobItemHTML = `
-        <li class="job-item">
+        <li class="job-item ${state.activeJobItem.id === jobItem.id ? "job-item--active" : ""}">
         <a class="job-item__link" href="${jobItem.id}">
             <div class="job-item__badge">${jobItem.badgeLetters}</div>
              <div class="job-item__middle">
@@ -66,6 +66,9 @@ const clickHandler = async event => {
 
     //get the id
     const id = jobItemElement.children[0].getAttribute("href");
+
+    //update state
+    state.activeJobItem = state.searchJobItems.find(jobItem => jobItem.id === +id); //find the job item in the search job items array
 
     //add id to the URL
     history.pushState(null, '', `/#${id}`); // 3 argument , add id to the URL
