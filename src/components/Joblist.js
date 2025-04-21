@@ -4,17 +4,29 @@ import {
     state,
     jobListSearchElement,
     jobDetailsContentElement,
+    jobListBookmarksElement,
     getData
 } from "../common.js";
 import renderSpinner from "./Spinner.js";
 import renderJobDetails from "./JobDetails.js";
 import renderError from "./Error.js";
 
-const renderJobList = () => {   //remove the previous job items and add new job items
+const renderJobList = (whichJobList = 'search') => {   //input for functions //remove the previous job items and add new job items
 
-    jobListSearchElement.innerHTML = ""; //remove previous job items
-    
-    state.searchJobItems.slice(state.currentPage * RESULT_PER_PAGE - RESULT_PER_PAGE, state.currentPage * RESULT_PER_PAGE).forEach(jobItem => {
+    //determine correct selector for job list (search or bookmarks)
+    const jobListElement = whichJobList === 'search' ? jobListSearchElement : jobListBookmarksElement; //if search is clicked, then search job list is selected, else bookmarks job list is selected
+
+    jobListElement.innerHTML = ""; //remove previous job items
+
+    //determine the job items that should be rendered
+    let jobItems;
+    if (whichJobList === 'search') {
+        jobItems = state.searchJobItems.slice(state.currentPage * RESULT_PER_PAGE - RESULT_PER_PAGE, state.currentPage * RESULT_PER_PAGE); 
+    } else if (whichJobList === 'bookmarks') {
+        jobItems = state.bookmarksJobItems; 
+    }
+
+jobItems.forEach(jobItem => {
         const newJobItemHTML = `
         <li class="job-item ${state.activeJobItem.id === jobItem.id ? "job-item--active" : ""}">
         <a class="job-item__link" href="${jobItem.id}">
@@ -35,7 +47,7 @@ const renderJobList = () => {   //remove the previous job items and add new job 
     </a>
     </li> 
     `;
-    jobListSearchElement.insertAdjacentHTML("beforeend", newJobItemHTML);
+    jobListElement.insertAdjacentHTML("beforeend", newJobItemHTML);
     });
 }
 
@@ -47,12 +59,13 @@ const clickHandler = async event => {
    
 
     //remove previous active class from all job items
-     document.querySelector(".job-item--active")?.classList.remove("job-item--active");
+    document.querySelectorAll('.job-item--active').forEach(jobItemWithActiveClass => jobItemWithActiveClass.classList.remove('job-item--active'));
     // const activeJobItemElement = document.querySelector(".job-item--active");
     // if (activeJobItemElement) {
     //     activeJobItemElement.classList.remove("job-item--active");
     // }
 // document.querySelectorAll(".job-item--active") && document.querySelector(".job-item--active").classList.remove("job-item--active");
+
 
     //add active class to clicked job item element
     jobItemElement.classList.add("job-item--active");
@@ -86,7 +99,7 @@ try{
     //render job details content
     renderJobDetails(jobItem);
 
-}catch(error){
+} catch(error){
     renderSpinner('job-details');
     renderError(error.message); //error message from the server and other errors
     
@@ -122,6 +135,7 @@ try{
 
 
 jobListSearchElement.addEventListener("click", clickHandler);
+jobListBookmarksElement.addEventListener("click", clickHandler); //add event listener to job list bookmarks element
 
 export default renderJobList;
 
