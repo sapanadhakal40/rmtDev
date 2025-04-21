@@ -29,6 +29,9 @@ localStorage.setItem("bookmarksJobItems", JSON.stringify(state.bookmarksJobItems
     //update bookmarks button
     document.querySelector(".job-info__bookmark-icon").classList.toggle("job-info__bookmark-icon--bookmarked"); //add active class to bookmarks button
 
+    //render search job list
+    renderJobList('search'); //render search job list
+
 };
 
 

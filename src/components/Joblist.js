@@ -41,7 +41,7 @@ jobItems.forEach(jobItem => {
               </div>
          </div>
        <div class="job-item__right">
-       <i class="fa-solid fa-bookmark job-item__bookmark-icon"></i>
+       <i class="fa-solid fa-bookmark job-item__bookmark-icon ${state.bookmarksJobItems.some(bookmarkJobItem => bookmarkJobItem.id === jobItem.id) && 'job-item__bookmark-icon--bookmarked' }"></i>
        <time class="job-item__time">${jobItem.daysAgo}d</time>
     </div>
     </a>
@@ -68,7 +68,7 @@ const clickHandler = async event => {
 
 
     //add active class to clicked job item element
-    jobItemElement.classList.add("job-item--active");
+    // jobItemElement.classList.add("job-item--active");  //not needed //because we are adding the class in the renderJobList function
 
     //empty job details content
     jobDetailsContentElement.innerHTML = "";
@@ -83,6 +83,9 @@ const clickHandler = async event => {
     //update state
     const allJobItems = [...state.searchJobItems, ...state.bookmarksJobItems]; //combine search and bookmarks job items an dtake all objects in the array
     state.activeJobItem = allJobItems.find(jobItem => jobItem.id === +id); //find the job item in the search job items array
+
+    //render search job list
+    renderJobList('search'); 
 
     //add id to the URL
     history.pushState(null, '', `/#${id}`); // 3 argument , add id to the URL

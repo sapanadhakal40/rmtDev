@@ -7,6 +7,7 @@ import {
 import renderSpinner from "./Spinner.js";
 import renderJobDetails from "./JobDetails.js";
 import renderError from "./Error.js";
+import renderJobList from "./Joblist.js";
 
 const loadHashChangeHandler = async () => {
 
@@ -15,6 +16,10 @@ const loadHashChangeHandler = async () => {
 
    
     if (id) {//if id is not empty
+
+        //remove the active class from previously active job items
+    document.querySelectorAll('.job-item--active').forEach(jobItemWithActiveClass => jobItemWithActiveClass.classList.remove('job-item--active'));
+
    jobDetailsContentElement.innerHTML = ""; //empty job details content
 
    //show spinner
@@ -29,6 +34,9 @@ try{
 
     //update state
     state.activeJobItem = jobItem; //find the job item in the search job items array
+
+//render search job list
+    renderJobList('search'); 
 
  
      //remove spinner
