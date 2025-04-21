@@ -15,12 +15,17 @@ const clickHandler = event => {
     //update state
     // state.bookmarksJobItems.push(state.activeJobItem); //add active job item to bookmarks job items
 
-    //if already bookmar then remove it from bookmarks job items
+    //if already bookmark then remove it from bookmarks job items
 if (state.bookmarksJobItems.some(bookmarkJobItem => bookmarkJobItem.id === state.activeJobItem.id)) {
     state.bookmarksJobItems = state.bookmarksJobItems.filter(bookmarkJobItem => bookmarkJobItem.id!== state.activeJobItem.id); //remove active job item from bookmarks job items
 } else {
     state.bookmarksJobItems.push(state.activeJobItem);
 }
+
+//persist bookmarks job items to local storage
+localStorage.setItem("bookmarksJobItems", JSON.stringify(state.bookmarksJobItems)); //save bookmarks job items to local storage
+
+
     //update bookmarks button
     document.querySelector(".job-info__bookmark-icon").classList.toggle("job-info__bookmark-icon--bookmarked"); //add active class to bookmarks button
 
