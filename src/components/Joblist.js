@@ -70,7 +70,9 @@ const clickHandler = async event => {
     //add id to the URL
     history.pushState(null, '', `/#${id}`); // 3 argument , add id to the URL
 
+   
     //fetch job item data
+
 try{
    const data = await getData(`${BASE_API_URL}/jobs/${id}`); //getdata function is in common.js   
    const { jobItem } = data;
@@ -86,6 +88,7 @@ try{
     renderError(error.message); //error message from the server and other errors
     
 }
+};
 
 //traditional way of doing it
     
@@ -113,7 +116,7 @@ try{
 //             renderError(error.message); //error message from the server and other errors
 //             // console.error(error.message);  //network problems or other errors and trying to parse something that is not JSON
 //         });//network problems
-};
+
 
 jobListSearchElement.addEventListener("click", clickHandler);
 
