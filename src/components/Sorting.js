@@ -5,12 +5,18 @@ import {
     sortingBtnRecentElement,
 } from "../common.js";
 import renderJobList from "./Joblist.js";
+import renderPaginationButtons from "./Pagination.js";
 
 const clickHandler = (event) => {
     const clickedButtonElement = event.target.closest(".sorting__button");
 
     //stop if the clicked button is not a sorting button
     if (!clickedButtonElement) return;
+
+    //update state
+    state.currentPage = 1; //reset the current page to 1 
+
+
 
     //check if intention is recent or relevant
     const recent = clickedButtonElement.className.includes("--recent") ? true : false;
@@ -41,6 +47,8 @@ const clickHandler = (event) => {
            // if a =94 and b=70 then a is more relevant than b
         });
     }
+    //reset pagination
+    renderPaginationButtons(); //render pagination buttons again after sorting
        
     //render the job list again after sorting
     renderJobList(); 

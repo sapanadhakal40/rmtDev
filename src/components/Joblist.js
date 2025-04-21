@@ -1,5 +1,6 @@
 import {
     BASE_API_URL,
+    RESULT_PER_PAGE,
     state,
     jobListSearchElement,
     jobDetailsContentElement,
@@ -13,7 +14,7 @@ const renderJobList = () => {   //remove the previous job items and add new job 
 
     jobListSearchElement.innerHTML = ""; //remove previous job items
     
-    state.searchJobItems.slice(0, 7).forEach(jobItem => {
+    state.searchJobItems.slice(state.currentPage * RESULT_PER_PAGE - RESULT_PER_PAGE, state.currentPage * RESULT_PER_PAGE).forEach(jobItem => {
         const newJobItemHTML = `
         <li class="job-item">
         <a class="job-item__link" href="${jobItem.id}">

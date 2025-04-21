@@ -6,11 +6,15 @@ import {
     spinnerSearchElement,
     jobListSearchElement,
     numberElement,
+    sortingBtnRecentElement,
+    sortingBtnRelevantElement,
     getData
 } from "../common.js";
 import renderError from "./Error.js";
 import renderSpinner from "./Spinner.js";
 import renderJobList from "./Joblist.js";
+import renderPaginationButtons from "./Pagination.js";
+
 
 
 //search component-----
@@ -25,8 +29,7 @@ const searchText = searchInputElement.value;
    const forbiddenPattern = /[0-9]/; 
    const patternMatch = forbiddenPattern.test(searchText);
    if (patternMatch) {
-    
-         //show error message
+      //show error message
          renderError("Your search term should not contain numbers.");
          return;
    }
@@ -36,6 +39,10 @@ const searchText = searchInputElement.value;
     //remove previous job items
    jobListSearchElement.innerHTML = "";
 
+   //reset sorting buttons
+    sortingBtnRecentElement.classList.remove("sorting__button--active");
+    sortingBtnRelevantElement.classList.add("sorting__button--active");
+    
    //show spinner
    renderSpinner('search');
 
@@ -49,6 +56,7 @@ const searchText = searchInputElement.value;
 
         //update state object
         state.searchJobItems = jobItems; //search job items which is an array of objects
+        state.currentPage = 1; //reset the current page to 1
         //using const we can not change the value of jobItems but we can change the properties of the object inside the array
      // can't assign new state 
 
@@ -56,6 +64,9 @@ const searchText = searchInputElement.value;
         renderSpinner('search');
      
         numberElement.textContent = jobItems.length;
+
+        //reset pagination buttons
+        renderPaginationButtons(); //render pagination buttons again after sorting
      
         renderJobList();
 
