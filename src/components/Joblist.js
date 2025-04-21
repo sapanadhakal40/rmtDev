@@ -67,6 +67,9 @@ const clickHandler = async event => {
     //get the id
     const id = jobItemElement.children[0].getAttribute("href");
 
+    //add id to the URL
+    history.pushState(null, '', `/#${id}`); // 3 argument , add id to the URL
+
     //fetch job item data
 try{
    const data = await getData(`${BASE_API_URL}/jobs/${id}`); //getdata function is in common.js   

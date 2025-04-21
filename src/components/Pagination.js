@@ -47,11 +47,11 @@ const clickHandler = (event) => {
     //check if intention is next or back
     const nextPage = clickedButtonElement.className.includes("--next") ? true : false;
 
-    //render pagination buttons
-    renderPaginationButtons();
-
     //update state
     nextPage ? state.currentPage++ : state.currentPage--;
+
+     //render pagination buttons
+     renderPaginationButtons();
 
     //render the job items according to the page number
     renderJobList();
